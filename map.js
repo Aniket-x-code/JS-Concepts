@@ -1,27 +1,46 @@
-console.log("hello mf");
+const cart = ["shoes", "pants", "kurta"];
 
+createOrder(cart)
+  .then(function (orderId) {
+    // ✅ success aka resolved promise handling
+    // 💡 we have return data or promise so that we can keep chaining the promises, here we are returning data
+    console.log(orderId);
+    return orderId;
+  })
+  .then(function (orderId) {
+    // Promise chaining
+    // 💡 we will make sure that `proceedToPayment` returns a promise too
+    return proceedToPayment(orderId);
+  })
+  .then(function (paymentInfo) {
+    // from above, `proceedToPayment` is returning a promise so we can consume using `.then`
+    console.log(paymentInfo);
+  })
+  .catch(function (err) {
+    // ⚠️ failure aka reject handling
+    console.log(err);
+  });
 
-const radius = [10,2,3,4];
-
-function double (x)
-{
-    return x*2;
-} // transformation logic
-
-function binary(x)
-{
-   return x.toString(2);
+// Here we are creating Promise
+function createOrder(cart) {
+  const promise = new Promise(function (resolve, reject) {
+    // Assume below `validateCart` return false then the promise will be rejected
+    // And then our browser is going to throw the error.
+    if (!validateCart(cart)) {
+      const err = new Error("Cart is not Valid");
+      reject(err);
+    }
+    const orderId = "12345";
+    if (orderId) {
+      resolve(orderId);
+    }
+  });
+  return promise;
 }
 
-const ouput = radius.map( double);
-const bin = radius.map(binary);
-console.log(ouput);
-console.log(bin);
-
-// reduce fn ( fn (acc, cur), initial value of acc)
-
-const out = radius.reduce((acc, cur) =>{
-     acc= acc+cur;
-     return acc;
-},0);
-console.log(out); // here 0 is teh initial value of acc because sum ko 0 se initial karna hai
+function proceedToPayment(cart) {
+  return new Promise(function (resolve, reject) {
+    // For time being, we are simply `resolving` promise
+    resolve("Payment Successful");
+  });
+}
