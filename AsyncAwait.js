@@ -1,36 +1,18 @@
-console.log( "Async linked");
+const Api= "https://api.github.com/users/aniket-x-code"
 
 
-const p1 = new Promise((resolve, reject) => {
-  setTimeout( ()=>{
-    resolve ("p1 resolved");
-},1000)
-}
-)
+async function handlePromie(){
 
-
-const p2 = new Promise((resolve, reject) => {
-  setTimeout( ()=>{
-    resolve ("p2 resolved");
-},5000)
-}
-)
-
-
- async function getdata()
-{
-  console.log("Hello js");
-   const val = await p1;
-   console.log("Namaste js");
-   console.log(val);
-
-    const val2 = await p2;
-    console.log(val2);
-    console.log("End");
-
-  // using async and await - await can only be used inside async function only
+  try
+  {
+  const data = await fetch(Api)
+ const res = await  data.json();
+ console.log(res);
+  }
+  catch(err)
+  {
+    console.log(err);
+  }
 }
 
-getdata();
-
-
+handlePromie()
